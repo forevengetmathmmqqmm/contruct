@@ -1,4 +1,4 @@
-const Contracts = artifacts.require('studentStorage.sol');
+const Contracts = artifacts.require('studentStorages.sol');
 module.exports = function (deployer) {
     deployer.deploy(Contracts);
 } 
