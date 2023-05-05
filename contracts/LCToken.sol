@@ -21,6 +21,8 @@ contract LCToken {
 
   function transfer(address _to, uint256 _value) public returns (bool success) {
     require(_to != address(0));
+    _transfer(msg.sender, to, val);
+    return true;
   }
 
   function _transfer(address from, address to, uint256 val) internal {
@@ -30,10 +32,18 @@ contract LCToken {
 
     emit Transfer(from, to, val);
   }
-
+  // 授权给交易所
   function approve(address _spender, uint256 _value) public returns (bool success){
     allowance[msg.sender][_spender] = _value;
     emit Approval(msg.sender,_spender,_value);
+    return true;
+  }
+  //被授权得交易所调用
+  function transferFrom(address _from, address _to, uint256 _val) {
+    require(balanceOf[_from] >= _val);
+    require(allowance[_from][msg.sender] >= _val);
+    allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_val);
+    _transfer(_from, _to, _val);
     return true;
   }
 }
